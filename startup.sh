@@ -1,6 +1,8 @@
 #!/bin/bash
 BASEFILE="localtls.nginx.conf"
 DESTFILE="/etc/nginx/conf.d/default.conf"
+TEMPONE="/tmp/file1"
+TEMPTWO="/tmp/file2"
 
 if [ "$DESTHOST" == "" ]
 then
@@ -14,7 +16,21 @@ then
     exit 2
 fi
 
-cat "$BASEFILE" | sed s/{{DESTHOST}}/$DESTHOST/ | sed s/{{DESTPORT}}/$DESTPORT/ > $DESTFILE
+# Preload TEMPONE with base file
+cat $BASEFILE > $TEMPONE
+
+if [ "$CORS" == "" ]
+then
+    # No CORS defined, remove that line
+    cat $TEMPONE | sed s/^.*{{CORS}}.*$// > $TEMPTWO
+else
+    # CORS defined, set it
+    cat $TEMPONE | sed s/{{CORS}}/$CORS/ > $TEMPTWO
+fi
+
+mv $TEMPTWO $TEMPONE
+
+cat "$TEMPONE" | sed s/{{DESTHOST}}/$DESTHOST/ | sed s/{{DESTPORT}}/$DESTPORT/ > $DESTFILE
 
 service nginx restart
 

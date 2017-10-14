@@ -5,3 +5,7 @@ Simply run `docker run -e DESTHOST="<host or ip>" -e DESTPORT=<port> -p "443:443
 Where `<host or ip>` is the downstream, host or IP address you want to proxy requests to and `<port>` is the port that service is listening on.
 
 In the original example, you would run `docker run -e DESTHOST="1.2.3.4" -e DESTPORT=3000 -p "443:443" achip/localtls` and then you can access your the localtls container at https://localhost
+
+
+## Environment Options
+* Supply `-e CORS="<host mask>"` to set the CORS header.
