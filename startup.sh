@@ -35,3 +35,9 @@ cat "$TEMPONE" | sed s/{{DESTHOST}}/$DESTHOST/ | sed s/{{DESTPORT}}/$DESTPORT/ >
 service nginx restart
 
 echo "Running..."
+
+while true
+do
+    sleep 10
+done
+
